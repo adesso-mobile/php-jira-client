@@ -1,0 +1,94 @@
+swagger: "2.0"
+info:
+    description: "This is the jira rest resources endpoint documentation"
+    version: "8.4.0"
+    title: "Jira Rest Resources"
+basePath: "/api/2"
+tags:
+    - name: jira 
+    
+schemes: 
+    - "https"
+paths:
+    /issue:
+        post:
+            summary: "Creates an issue or a sub-task from a JSON representation"
+            operationId: "createIssue"
+            tags:
+              - jira 
+            security:
+              - crowdAuth: []
+            consumes:
+            - "application/json"
+            produces:
+            - "application/json"
+            parameters:
+            - name: "updateHistory"
+              in: "query"
+              description: "if true then the user's project history is updated"
+              type: "boolean"
+              required: false
+              default: false
+            - name: "issue"
+              in: "body"
+              description: "The specification of the issue to create"
+              schema:
+                $ref: '#/definitions/JiraIssueCreationProperties'
+            responses:
+              201:
+                description: "The user was succesfully created"
+                schema:
+                  $ref: '#/definitions/CwdUser'
+              400:
+                description: "invalid user data, for example missing password or the user already exists"
+              403:
+                description: "the application is not allowed to create a new user"
+
+securityDefinitions:
+    crowdAuth:
+      type: basic
+
+definitions:
+    JiraIssueCreationProperties:
+        type: "object"
+        properties:
+            fields:
+                $ref: '#/definitions/JiraIssueFields'
+            worklog:
+                type: "object" # Needs to be implemented
+    JiraIssueFields: # Needs to be completed
+        type: "object"
+        properties:
+            project:
+                type: "object"
+                properties:
+                    id:
+                        type: "string"
+            summary:
+                type: "string"
+            issuetype:
+                type: "object"
+                properties:
+                    id:
+                        type: "string"
+            assignee:
+                type: "object"
+                properties:
+                    name:
+                        type: "string"
+            reporter:
+                type: "object"
+                properties:
+                    name:
+                        type: "string"
+            priority:
+                type: "object"
+                properties:
+                    id:
+                        type: "string"
+            labels:
+                type: "array"
+                items:
+                    type: "string"
+            description:
+                type: "string"
