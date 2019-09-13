@@ -6,10 +6,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **project** | [**\JiraClient\Model\JiraIssueFieldsProject**](JiraIssueFieldsProject.md) |  | [optional] 
 **summary** | **string** |  | [optional] 
-**issuetype** | [**\JiraClient\Model\JiraIssueFieldsProject**](JiraIssueFieldsProject.md) |  | [optional] 
-**assignee** | [**\JiraClient\Model\JiraIssueFieldsAssignee**](JiraIssueFieldsAssignee.md) |  | [optional] 
-**reporter** | [**\JiraClient\Model\JiraIssueFieldsAssignee**](JiraIssueFieldsAssignee.md) |  | [optional] 
-**priority** | [**\JiraClient\Model\JiraIssueFieldsProject**](JiraIssueFieldsProject.md) |  | [optional] 
+**issuetype** | **object** |  | [optional] 
+**assignee** | **object** |  | [optional] 
+**reporter** | **object** |  | [optional] 
+**priority** | **object** |  | [optional] 
 **labels** | **string[]** |  | [optional] 
 **description** | **string** |  | [optional] 
 

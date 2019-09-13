@@ -36,19 +36,72 @@ paths:
                 $ref: '#/definitions/JiraIssueCreationProperties'
             responses:
               201:
-                description: "The user was succesfully created"
+                description: "Returns a link to the created issue"
                 schema:
-                  $ref: '#/definitions/CwdUser'
+                  $ref: '#/definitions/JiraCreatedIssue'
               400:
-                description: "invalid user data, for example missing password or the user already exists"
-              403:
-                description: "the application is not allowed to create a new user"
+                description: "Returned if the input is invalid (e.g. missing required fields, invalid field values, and so forth)."
 
 securityDefinitions:
     crowdAuth:
       type: basic
 
 definitions:
+    JiraCreatedIssue:
+        type: "object"
+        properties:
+            id:
+                type: "string"
+            key:
+                type: "string"
+            self:
+                type: "string"
+    JiraIssueFieldsProject: # Needs to be completed
+        type: "object"
+        properties:
+            id:
+                type: "string"
+    JiraIssueFieldsIssuetype:
+        type: "object"
+        properties:
+            id:
+                type: "string"
+    JiraIssueFieldsAssignee:
+        type: "object"
+        properties:
+            name:
+                type: "string"
+    JiraIssueFieldsReporter:
+        type: "object"
+        properties:
+            name:
+                type: "string"
+    JiraIssueFieldsPriority:
+        type: "object"
+        properties:
+            id:
+                type: "string"
+    JiraIssueFields: # Needs to be completed
+        type: "object"
+        properties:
+            project:
+                $ref: '#/definitions/JiraIssueFieldsProject'
+            summary:
+                type: "string"
+            issuetype:
+                $ref: '#/defintions/JiraIssueFieldsIssuetype'
+            assignee:
+                $ref: '#/defintions/JiraIssueFieldsAssignee'
+            reporter:
+                $ref: '#/defintions/JiraIssueFieldsReporter'
+            priority:
+                $ref: '#/defintions/JiraIssueFieldsPriority'
+            labels:
+                type: "array"
+                items:
+                    type: "string"
+            description:
+                type: "string"
     JiraIssueCreationProperties:
         type: "object"
         properties:
@@ -56,39 +109,3 @@ definitions:
                 $ref: '#/definitions/JiraIssueFields'
             worklog:
                 type: "object" # Needs to be implemented
-    JiraIssueFields: # Needs to be completed
-        type: "object"
-        properties:
-            project:
-                type: "object"
-                properties:
-                    id:
-                        type: "string"
-            summary:
-                type: "string"
-            issuetype:
-                type: "object"
-                properties:
-                    id:
-                        type: "string"
-            assignee:
-                type: "object"
-                properties:
-                    name:
-                        type: "string"
-            reporter:
-                type: "object"
-                properties:
-                    name:
-                        type: "string"
-            priority:
-                type: "object"
-                properties:
-                    id:
-                        type: "string"
-            labels:
-                type: "array"
-                items:
-                    type: "string"
-            description:
-                type: "string"

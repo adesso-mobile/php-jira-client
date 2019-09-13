@@ -49,7 +49,7 @@ class JiraIssueFieldsProject implements ModelInterface, ArrayAccess
       *
       * @var string
       */
-    protected static $openAPIModelName = 'JiraIssueFields_project';
+    protected static $openAPIModelName = 'JiraIssueFieldsProject';
 
     /**
       * Array of property to type mappings. Used for (de)serialization

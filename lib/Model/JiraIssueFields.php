@@ -59,10 +59,10 @@ class JiraIssueFields implements ModelInterface, ArrayAccess
     protected static $openAPITypes = [
         'project' => '\JiraClient\Model\JiraIssueFieldsProject',
         'summary' => 'string',
-        'issuetype' => '\JiraClient\Model\JiraIssueFieldsProject',
-        'assignee' => '\JiraClient\Model\JiraIssueFieldsAssignee',
-        'reporter' => '\JiraClient\Model\JiraIssueFieldsAssignee',
-        'priority' => '\JiraClient\Model\JiraIssueFieldsProject',
+        'issuetype' => 'object',
+        'assignee' => 'object',
+        'reporter' => 'object',
+        'priority' => 'object',
         'labels' => 'string[]',
         'description' => 'string'
     ];
@@ -297,7 +297,7 @@ class JiraIssueFields implements ModelInterface, ArrayAccess
     /**
      * Gets issuetype
      *
-     * @return \JiraClient\Model\JiraIssueFieldsProject|null
+     * @return object|null
      */
     public function getIssuetype()
     {
@@ -307,7 +307,7 @@ class JiraIssueFields implements ModelInterface, ArrayAccess
     /**
      * Sets issuetype
      *
-     * @param \JiraClient\Model\JiraIssueFieldsProject|null $issuetype issuetype
+     * @param object|null $issuetype issuetype
      *
      * @return $this
      */
@@ -321,7 +321,7 @@ class JiraIssueFields implements ModelInterface, ArrayAccess
     /**
      * Gets assignee
      *
-     * @return \JiraClient\Model\JiraIssueFieldsAssignee|null
+     * @return object|null
      */
     public function getAssignee()
     {
@@ -331,7 +331,7 @@ class JiraIssueFields implements ModelInterface, ArrayAccess
     /**
      * Sets assignee
      *
-     * @param \JiraClient\Model\JiraIssueFieldsAssignee|null $assignee assignee
+     * @param object|null $assignee assignee
      *
      * @return $this
      */
@@ -345,7 +345,7 @@ class JiraIssueFields implements ModelInterface, ArrayAccess
     /**
      * Gets reporter
      *
-     * @return \JiraClient\Model\JiraIssueFieldsAssignee|null
+     * @return object|null
      */
     public function getReporter()
     {
@@ -355,7 +355,7 @@ class JiraIssueFields implements ModelInterface, ArrayAccess
     /**
      * Sets reporter
      *
-     * @param \JiraClient\Model\JiraIssueFieldsAssignee|null $reporter reporter
+     * @param object|null $reporter reporter
      *
      * @return $this
      */
@@ -369,7 +369,7 @@ class JiraIssueFields implements ModelInterface, ArrayAccess
     /**
      * Gets priority
      *
-     * @return \JiraClient\Model\JiraIssueFieldsProject|null
+     * @return object|null
      */
     public function getPriority()
     {
@@ -379,7 +379,7 @@ class JiraIssueFields implements ModelInterface, ArrayAccess
     /**
      * Sets priority
      *
-     * @param \JiraClient\Model\JiraIssueFieldsProject|null $priority priority
+     * @param object|null $priority priority
      *
      * @return $this
      */

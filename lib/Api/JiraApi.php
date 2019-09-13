@@ -125,7 +125,7 @@ class JiraApi
      *
      * @throws \JiraClient\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \JiraClient\Model\CwdUser
+     * @return \JiraClient\Model\JiraCreatedIssue
      */
     public function createIssue($update_history = false, $issue = null)
     {
@@ -143,7 +143,7 @@ class JiraApi
      *
      * @throws \JiraClient\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \JiraClient\Model\CwdUser, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \JiraClient\Model\JiraCreatedIssue, HTTP status code, HTTP response headers (array of strings)
      */
     public function createIssueWithHttpInfo($update_history = false, $issue = null)
     {
@@ -180,20 +180,20 @@ class JiraApi
             $responseBody = $response->getBody();
             switch($statusCode) {
                 case 201:
-                    if ('\JiraClient\Model\CwdUser' === '\SplFileObject') {
+                    if ('\JiraClient\Model\JiraCreatedIssue' === '\SplFileObject') {
                         $content = $responseBody; //stream goes to serializer
                     } else {
                         $content = $responseBody->getContents();
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\JiraClient\Model\CwdUser', []),
+                        ObjectSerializer::deserialize($content, '\JiraClient\Model\JiraCreatedIssue', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\JiraClient\Model\CwdUser';
+            $returnType = '\JiraClient\Model\JiraCreatedIssue';
             $responseBody = $response->getBody();
             if ($returnType === '\SplFileObject') {
                 $content = $responseBody; //stream goes to serializer
@@ -212,7 +212,7 @@ class JiraApi
                 case 201:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\JiraClient\Model\CwdUser',
+                        '\JiraClient\Model\JiraCreatedIssue',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -256,7 +256,7 @@ class JiraApi
      */
     public function createIssueAsyncWithHttpInfo($update_history = false, $issue = null)
     {
-        $returnType = '\JiraClient\Model\CwdUser';
+        $returnType = '\JiraClient\Model\JiraCreatedIssue';
         $request = $this->createIssueRequest($update_history, $issue);
 
         return $this->client

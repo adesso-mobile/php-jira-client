@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 ## createIssue
 
-> \JiraClient\Model\CwdUser createIssue($update_history, $issue)
+> \JiraClient\Model\JiraCreatedIssue createIssue($update_history, $issue)
 
 Creates an issue or a sub-task from a JSON representation
 
@@ -55,7 +55,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\JiraClient\Model\CwdUser**](../Model/CwdUser.md)
+[**\JiraClient\Model\JiraCreatedIssue**](../Model/JiraCreatedIssue.md)
 
 ### Authorization
 

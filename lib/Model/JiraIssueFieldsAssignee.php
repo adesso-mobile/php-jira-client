@@ -49,7 +49,7 @@ class JiraIssueFieldsAssignee implements ModelInterface, ArrayAccess
       *
       * @var string
       */
-    protected static $openAPIModelName = 'JiraIssueFields_assignee';
+    protected static $openAPIModelName = 'JiraIssueFieldsAssignee';
 
     /**
       * Array of property to type mappings. Used for (de)serialization

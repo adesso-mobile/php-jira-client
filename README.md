@@ -96,10 +96,14 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [JiraCreatedIssue](docs/Model/JiraCreatedIssue.md)
  - [JiraIssueCreationProperties](docs/Model/JiraIssueCreationProperties.md)
  - [JiraIssueFields](docs/Model/JiraIssueFields.md)
  - [JiraIssueFieldsAssignee](docs/Model/JiraIssueFieldsAssignee.md)
+ - [JiraIssueFieldsIssuetype](docs/Model/JiraIssueFieldsIssuetype.md)
+ - [JiraIssueFieldsPriority](docs/Model/JiraIssueFieldsPriority.md)
  - [JiraIssueFieldsProject](docs/Model/JiraIssueFieldsProject.md)
+ - [JiraIssueFieldsReporter](docs/Model/JiraIssueFieldsReporter.md)
 
 
 ## Documentation For Authorization
