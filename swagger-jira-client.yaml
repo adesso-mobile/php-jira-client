@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
     description: "This is the jira rest resources endpoint documentation"
-    version: "8.4.0"
+    version: "8.3.2"
     title: "Jira Rest Resources"
 basePath: "/api/2"
 tags:
