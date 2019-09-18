@@ -42,6 +42,38 @@ paths:
               400:
                 description: "Returned if the input is invalid (e.g. missing required fields, invalid field values, and so forth)."
 
+    /issue/{issueIdOrKey}/attachments:
+        post:
+            summary: "Add one or more attachments to an issue"
+            operationId: "addAttachment"
+            tags:
+              - jira 
+            security:
+              - crowdAuth: []
+            consumes:
+            - "multipart/form-data"
+            produces:
+            - "application/json"
+            parameters:
+                - in: header
+                  name: X-Atlassian-Token
+                  type: string
+                  required: false 
+                  default: "no-check"
+                - in: formData
+                  name: file
+                  type: file 
+                  required: true
+                  description: "The attachment to upload"
+            responses:
+                200:
+                    description: "Upload of attachments was successful"
+                403:
+                    description: "Returned if attachments is disabled or if you don't have permission to add attachments to this issue."
+                404:
+                    description: "Returned if the requested issue is not found, the user does not have permission to view it, or if the attachments exceeds the maximum configured attachment size."
+            
+
 securityDefinitions:
     crowdAuth:
       type: basic

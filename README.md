@@ -72,14 +72,13 @@ $apiInstance = new JiraClient\Api\JiraApi(
     new GuzzleHttp\Client(),
     $config
 );
-$update_history = false; // bool | if true then the user's project history is updated
-$issue = new \JiraClient\Model\JiraIssueCreationProperties(); // \JiraClient\Model\JiraIssueCreationProperties | The specification of the issue to create
+$file = "/path/to/file.txt"; // \SplFileObject | The attachment to upload
+$x_atlassian_token = 'no-check'; // string | 
 
 try {
-    $result = $apiInstance->createIssue($update_history, $issue);
-    print_r($result);
+    $apiInstance->addAttachment($file, $x_atlassian_token);
 } catch (Exception $e) {
-    echo 'Exception when calling JiraApi->createIssue: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling JiraApi->addAttachment: ', $e->getMessage(), PHP_EOL;
 }
 
 ?>
@@ -91,6 +90,7 @@ All URIs are relative to *http://localhost/api/2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*JiraApi* | [**addAttachment**](docs/Api/JiraApi.md#addattachment) | **POST** /issue/{issueIdOrKey}/attachments | Add one or more attachments to an issue
 *JiraApi* | [**createIssue**](docs/Api/JiraApi.md#createissue) | **POST** /issue | Creates an issue or a sub-task from a JSON representation
 
 

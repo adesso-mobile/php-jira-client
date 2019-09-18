@@ -116,6 +116,240 @@ class JiraApi
     }
 
     /**
+     * Operation addAttachment
+     *
+     * Add one or more attachments to an issue
+     *
+     * @param  \SplFileObject $file The attachment to upload (required)
+     * @param  string $x_atlassian_token x_atlassian_token (optional, default to 'no-check')
+     *
+     * @throws \JiraClient\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return void
+     */
+    public function addAttachment($file, $x_atlassian_token = 'no-check')
+    {
+        $this->addAttachmentWithHttpInfo($file, $x_atlassian_token);
+    }
+
+    /**
+     * Operation addAttachmentWithHttpInfo
+     *
+     * Add one or more attachments to an issue
+     *
+     * @param  \SplFileObject $file The attachment to upload (required)
+     * @param  string $x_atlassian_token (optional, default to 'no-check')
+     *
+     * @throws \JiraClient\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function addAttachmentWithHttpInfo($file, $x_atlassian_token = 'no-check')
+    {
+        $request = $this->addAttachmentRequest($file, $x_atlassian_token);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            return [null, $statusCode, $response->getHeaders()];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation addAttachmentAsync
+     *
+     * Add one or more attachments to an issue
+     *
+     * @param  \SplFileObject $file The attachment to upload (required)
+     * @param  string $x_atlassian_token (optional, default to 'no-check')
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function addAttachmentAsync($file, $x_atlassian_token = 'no-check')
+    {
+        return $this->addAttachmentAsyncWithHttpInfo($file, $x_atlassian_token)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation addAttachmentAsyncWithHttpInfo
+     *
+     * Add one or more attachments to an issue
+     *
+     * @param  \SplFileObject $file The attachment to upload (required)
+     * @param  string $x_atlassian_token (optional, default to 'no-check')
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function addAttachmentAsyncWithHttpInfo($file, $x_atlassian_token = 'no-check')
+    {
+        $returnType = '';
+        $request = $this->addAttachmentRequest($file, $x_atlassian_token);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'addAttachment'
+     *
+     * @param  \SplFileObject $file The attachment to upload (required)
+     * @param  string $x_atlassian_token (optional, default to 'no-check')
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function addAttachmentRequest($file, $x_atlassian_token = 'no-check')
+    {
+        // verify the required parameter 'file' is set
+        if ($file === null || (is_array($file) && count($file) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $file when calling addAttachment'
+            );
+        }
+
+        $resourcePath = '/issue/{issueIdOrKey}/attachments';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // header params
+        if ($x_atlassian_token !== null) {
+            $headerParams['X-Atlassian-Token'] = ObjectSerializer::toHeaderValue($x_atlassian_token);
+        }
+
+
+        // form params
+        if ($file !== null) {
+            $multipart = true;
+            $formParams['file'] = \GuzzleHttp\Psr7\try_fopen(ObjectSerializer::toFormValue($file), 'rb');
+        }
+        // body params
+        $_tempBody = null;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                []
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                [],
+                ['multipart/form-data']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            if ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
+            } else {
+                $httpBody = $_tempBody;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires HTTP basic authentication
+        if (!empty($this->config->getUsername()) || !(empty($this->config->getPassword()))) {
+            $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ":" . $this->config->getPassword());
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation createIssue
      *
      * Creates an issue or a sub-task from a JSON representation
