@@ -120,6 +120,7 @@ class JiraApi
      *
      * Add one or more attachments to an issue
      *
+     * @param  string $issue_id_or_key issue_id_or_key (required)
      * @param  \SplFileObject $file The attachment to upload (required)
      * @param  string $x_atlassian_token x_atlassian_token (optional, default to 'no-check')
      *
@@ -127,9 +128,9 @@ class JiraApi
      * @throws \InvalidArgumentException
      * @return void
      */
-    public function addAttachment($file, $x_atlassian_token = 'no-check')
+    public function addAttachment($issue_id_or_key, $file, $x_atlassian_token = 'no-check')
     {
-        $this->addAttachmentWithHttpInfo($file, $x_atlassian_token);
+        $this->addAttachmentWithHttpInfo($issue_id_or_key, $file, $x_atlassian_token);
     }
 
     /**
@@ -137,6 +138,7 @@ class JiraApi
      *
      * Add one or more attachments to an issue
      *
+     * @param  string $issue_id_or_key (required)
      * @param  \SplFileObject $file The attachment to upload (required)
      * @param  string $x_atlassian_token (optional, default to 'no-check')
      *
@@ -144,9 +146,9 @@ class JiraApi
      * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function addAttachmentWithHttpInfo($file, $x_atlassian_token = 'no-check')
+    public function addAttachmentWithHttpInfo($issue_id_or_key, $file, $x_atlassian_token = 'no-check')
     {
-        $request = $this->addAttachmentRequest($file, $x_atlassian_token);
+        $request = $this->addAttachmentRequest($issue_id_or_key, $file, $x_atlassian_token);
 
         try {
             $options = $this->createHttpClientOption();
@@ -190,15 +192,16 @@ class JiraApi
      *
      * Add one or more attachments to an issue
      *
+     * @param  string $issue_id_or_key (required)
      * @param  \SplFileObject $file The attachment to upload (required)
      * @param  string $x_atlassian_token (optional, default to 'no-check')
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function addAttachmentAsync($file, $x_atlassian_token = 'no-check')
+    public function addAttachmentAsync($issue_id_or_key, $file, $x_atlassian_token = 'no-check')
     {
-        return $this->addAttachmentAsyncWithHttpInfo($file, $x_atlassian_token)
+        return $this->addAttachmentAsyncWithHttpInfo($issue_id_or_key, $file, $x_atlassian_token)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -211,16 +214,17 @@ class JiraApi
      *
      * Add one or more attachments to an issue
      *
+     * @param  string $issue_id_or_key (required)
      * @param  \SplFileObject $file The attachment to upload (required)
      * @param  string $x_atlassian_token (optional, default to 'no-check')
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function addAttachmentAsyncWithHttpInfo($file, $x_atlassian_token = 'no-check')
+    public function addAttachmentAsyncWithHttpInfo($issue_id_or_key, $file, $x_atlassian_token = 'no-check')
     {
         $returnType = '';
-        $request = $this->addAttachmentRequest($file, $x_atlassian_token);
+        $request = $this->addAttachmentRequest($issue_id_or_key, $file, $x_atlassian_token);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -248,14 +252,21 @@ class JiraApi
     /**
      * Create request for operation 'addAttachment'
      *
+     * @param  string $issue_id_or_key (required)
      * @param  \SplFileObject $file The attachment to upload (required)
      * @param  string $x_atlassian_token (optional, default to 'no-check')
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function addAttachmentRequest($file, $x_atlassian_token = 'no-check')
+    protected function addAttachmentRequest($issue_id_or_key, $file, $x_atlassian_token = 'no-check')
     {
+        // verify the required parameter 'issue_id_or_key' is set
+        if ($issue_id_or_key === null || (is_array($issue_id_or_key) && count($issue_id_or_key) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $issue_id_or_key when calling addAttachment'
+            );
+        }
         // verify the required parameter 'file' is set
         if ($file === null || (is_array($file) && count($file) === 0)) {
             throw new \InvalidArgumentException(
@@ -275,6 +286,14 @@ class JiraApi
             $headerParams['X-Atlassian-Token'] = ObjectSerializer::toHeaderValue($x_atlassian_token);
         }
 
+        // path params
+        if ($issue_id_or_key !== null) {
+            $resourcePath = str_replace(
+                '{' . 'issueIdOrKey' . '}',
+                ObjectSerializer::toPathValue($issue_id_or_key),
+                $resourcePath
+            );
+        }
 
         // form params
         if ($file !== null) {

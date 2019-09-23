@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## addAttachment
 
-> addAttachment($file, $x_atlassian_token)
+> addAttachment($issue_id_or_key, $file, $x_atlassian_token)
 
 Add one or more attachments to an issue
 
@@ -34,11 +34,12 @@ $apiInstance = new JiraClient\Api\JiraApi(
     new GuzzleHttp\Client(),
     $config
 );
+$issue_id_or_key = 'issue_id_or_key_example'; // string | 
 $file = "/path/to/file.txt"; // \SplFileObject | The attachment to upload
 $x_atlassian_token = 'no-check'; // string | 
 
 try {
-    $apiInstance->addAttachment($file, $x_atlassian_token);
+    $apiInstance->addAttachment($issue_id_or_key, $file, $x_atlassian_token);
 } catch (Exception $e) {
     echo 'Exception when calling JiraApi->addAttachment: ', $e->getMessage(), PHP_EOL;
 }
@@ -50,6 +51,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **issue_id_or_key** | **string**|  |
  **file** | **\SplFileObject****\SplFileObject**| The attachment to upload |
  **x_atlassian_token** | **string**|  | [optional] [default to &#39;no-check&#39;]
 

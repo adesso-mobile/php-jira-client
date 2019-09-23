@@ -55,6 +55,10 @@ paths:
             produces:
             - "application/json"
             parameters:
+                - in: path
+                  name: issueIdOrKey
+                  type: string
+                  required: true 
                 - in: header
                   name: X-Atlassian-Token
                   type: string
