@@ -93,6 +93,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *JiraApi* | [**addAttachment**](docs/Api/JiraApi.md#addattachment) | **POST** /issue/{issueIdOrKey}/attachments | Add one or more attachments to an issue
 *JiraApi* | [**createIssue**](docs/Api/JiraApi.md#createissue) | **POST** /issue | Creates an issue or a sub-task from a JSON representation
+*JiraApi* | [**findUsers**](docs/Api/JiraApi.md#findusers) | **GET** /user/search | Returns a list of users that match the search string. This resource cannot be accessed anonymously.
 
 
 ## Documentation For Models
@@ -105,6 +106,7 @@ Class | Method | HTTP request | Description
  - [JiraIssueFieldsPriority](docs/Model/JiraIssueFieldsPriority.md)
  - [JiraIssueFieldsProject](docs/Model/JiraIssueFieldsProject.md)
  - [JiraIssueFieldsReporter](docs/Model/JiraIssueFieldsReporter.md)
+ - [JiraUser](docs/Model/JiraUser.md)
 
 
 ## Documentation For Authorization

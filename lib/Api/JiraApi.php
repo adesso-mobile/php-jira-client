@@ -643,6 +643,314 @@ class JiraApi
     }
 
     /**
+     * Operation findUsers
+     *
+     * Returns a list of users that match the search string. This resource cannot be accessed anonymously.
+     *
+     * @param  string $username A query string used to search username, name or e-mail address (required)
+     * @param  int $start_at the index of the first user to return (0-based) (optional, default to 0)
+     * @param  int $max_results the maximum number of users to return (defaults to 50). The maximum allowed value is 1000. If you specify a value that is higher than this number, your search results will be truncated. (optional, default to 50)
+     * @param  bool $include_active include_active (optional, default to true)
+     * @param  bool $include_inactive include_inactive (optional, default to false)
+     *
+     * @throws \JiraClient\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \JiraClient\Model\JiraUser[]
+     */
+    public function findUsers($username, $start_at = 0, $max_results = 50, $include_active = true, $include_inactive = false)
+    {
+        list($response) = $this->findUsersWithHttpInfo($username, $start_at, $max_results, $include_active, $include_inactive);
+        return $response;
+    }
+
+    /**
+     * Operation findUsersWithHttpInfo
+     *
+     * Returns a list of users that match the search string. This resource cannot be accessed anonymously.
+     *
+     * @param  string $username A query string used to search username, name or e-mail address (required)
+     * @param  int $start_at the index of the first user to return (0-based) (optional, default to 0)
+     * @param  int $max_results the maximum number of users to return (defaults to 50). The maximum allowed value is 1000. If you specify a value that is higher than this number, your search results will be truncated. (optional, default to 50)
+     * @param  bool $include_active (optional, default to true)
+     * @param  bool $include_inactive (optional, default to false)
+     *
+     * @throws \JiraClient\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \JiraClient\Model\JiraUser[], HTTP status code, HTTP response headers (array of strings)
+     */
+    public function findUsersWithHttpInfo($username, $start_at = 0, $max_results = 50, $include_active = true, $include_inactive = false)
+    {
+        $request = $this->findUsersRequest($username, $start_at, $max_results, $include_active, $include_inactive);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            switch($statusCode) {
+                case 200:
+                    if ('\JiraClient\Model\JiraUser[]' === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\JiraClient\Model\JiraUser[]', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+            }
+
+            $returnType = '\JiraClient\Model\JiraUser[]';
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\JiraClient\Model\JiraUser[]',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation findUsersAsync
+     *
+     * Returns a list of users that match the search string. This resource cannot be accessed anonymously.
+     *
+     * @param  string $username A query string used to search username, name or e-mail address (required)
+     * @param  int $start_at the index of the first user to return (0-based) (optional, default to 0)
+     * @param  int $max_results the maximum number of users to return (defaults to 50). The maximum allowed value is 1000. If you specify a value that is higher than this number, your search results will be truncated. (optional, default to 50)
+     * @param  bool $include_active (optional, default to true)
+     * @param  bool $include_inactive (optional, default to false)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function findUsersAsync($username, $start_at = 0, $max_results = 50, $include_active = true, $include_inactive = false)
+    {
+        return $this->findUsersAsyncWithHttpInfo($username, $start_at, $max_results, $include_active, $include_inactive)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation findUsersAsyncWithHttpInfo
+     *
+     * Returns a list of users that match the search string. This resource cannot be accessed anonymously.
+     *
+     * @param  string $username A query string used to search username, name or e-mail address (required)
+     * @param  int $start_at the index of the first user to return (0-based) (optional, default to 0)
+     * @param  int $max_results the maximum number of users to return (defaults to 50). The maximum allowed value is 1000. If you specify a value that is higher than this number, your search results will be truncated. (optional, default to 50)
+     * @param  bool $include_active (optional, default to true)
+     * @param  bool $include_inactive (optional, default to false)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function findUsersAsyncWithHttpInfo($username, $start_at = 0, $max_results = 50, $include_active = true, $include_inactive = false)
+    {
+        $returnType = '\JiraClient\Model\JiraUser[]';
+        $request = $this->findUsersRequest($username, $start_at, $max_results, $include_active, $include_inactive);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'findUsers'
+     *
+     * @param  string $username A query string used to search username, name or e-mail address (required)
+     * @param  int $start_at the index of the first user to return (0-based) (optional, default to 0)
+     * @param  int $max_results the maximum number of users to return (defaults to 50). The maximum allowed value is 1000. If you specify a value that is higher than this number, your search results will be truncated. (optional, default to 50)
+     * @param  bool $include_active (optional, default to true)
+     * @param  bool $include_inactive (optional, default to false)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function findUsersRequest($username, $start_at = 0, $max_results = 50, $include_active = true, $include_inactive = false)
+    {
+        // verify the required parameter 'username' is set
+        if ($username === null || (is_array($username) && count($username) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $username when calling findUsers'
+            );
+        }
+
+        $resourcePath = '/user/search';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        if ($username !== null) {
+            $queryParams['username'] = ObjectSerializer::toQueryValue($username);
+        }
+        // query params
+        if ($start_at !== null) {
+            $queryParams['startAt'] = ObjectSerializer::toQueryValue($start_at);
+        }
+        // query params
+        if ($max_results !== null) {
+            $queryParams['maxResults'] = ObjectSerializer::toQueryValue($max_results);
+        }
+        // query params
+        if ($include_active !== null) {
+            $queryParams['includeActive'] = ObjectSerializer::toQueryValue($include_active);
+        }
+        // query params
+        if ($include_inactive !== null) {
+            $queryParams['includeInactive'] = ObjectSerializer::toQueryValue($include_inactive);
+        }
+
+
+        // body params
+        $_tempBody = null;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            if ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
+            } else {
+                $httpBody = $_tempBody;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires HTTP basic authentication
+        if (!empty($this->config->getUsername()) || !(empty($this->config->getPassword()))) {
+            $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ":" . $this->config->getPassword());
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Create http client option
      *
      * @throws \RuntimeException on file opening failure
